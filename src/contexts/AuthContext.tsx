@@ -46,17 +46,20 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   }, []);
 
   async function entrar(email: string, senha: string) {
+    if (!auth) throw new Error("Firebase Auth not initialized");
     const cred = await signInWithEmailAndPassword(auth, email, senha);
     document.cookie = `__session=${await cred.user.getIdToken()}; path=/`;
   }
 
   async function cadastrar(nome: string, email: string, senha: string) {
+    if (!auth) throw new Error("Firebase Auth not initialized");
     const cred = await createUserWithEmailAndPassword(auth, email, senha);
     await updateProfile(cred.user, { displayName: nome });
     document.cookie = `__session=${await cred.user.getIdToken()}; path=/`;
   }
 
   async function sair() {
+    if (!auth) return;
     await signOut(auth);
     document.cookie = "__session=; path=/; expires=Thu, 01 Jan 1970 00:00:00 GMT";
   }
