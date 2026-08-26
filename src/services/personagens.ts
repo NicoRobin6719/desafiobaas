@@ -31,7 +31,7 @@ import type { Classe, Personagem } from "@/types";
 export async function listarPersonagens(_uid: string): Promise<Personagem[]> {
   // 🐛 BUG 04 — query sem filtro de userId
   const q = query(
-    collection(db, "personagens"),
+      collection(db!, "personagens"),
     where("userId", "==", _uid)
   );
 
@@ -57,7 +57,7 @@ export async function criarPersonagem(
   classe: Classe
 ): Promise<string> {
   // 🐛 BUG 05 — nome de coleção errado: "personagem" ao invés de "personagens"
-  const ref = await addDoc(collection(db, "personagens"), {
+  const ref = await addDoc(collection(db!, "personagens"), {
     nome,
     classe,
     nivel: 1,
@@ -72,7 +72,7 @@ export async function criarPersonagem(
 // BUSCAR UM PERSONAGEM
 // ---------------------------------------------------------------------------
 export async function buscarPersonagem(id: string): Promise<Personagem | null> {
-  const snap = await getDoc(doc(db, "personagens", id));
+  const snap = await getDoc(doc(db!, "personagens", id));
   if (!snap.exists()) return null;
   return { id: snap.id, ...snap.data() } as Personagem;
 }
@@ -97,7 +97,7 @@ export async function equiparItem(
   itemId: string
 ): Promise<void> {
   // 🐛 BUG 06 — setDoc apaga o documento inteiro ao invés de atualizar só o campo
-  await updateDoc(doc(db, "personagens", personagemId), { [slot]: itemId });
+  await updateDoc(doc(db!, "personagens", personagemId), { [slot]: itemId });
 }
 
 // ---------------------------------------------------------------------------
@@ -117,14 +117,14 @@ export async function deletarPersonagem(
   indice: number
 ): Promise<void> {
   // 🐛 BUG 07 — usa o índice da lista (0, 1, 2) como ID do documento
-  await deleteDoc(doc(db, "personagens", personagem.id));
+  await deleteDoc(doc(db!, "personagens", personagem.id));
 }
 
 // ---------------------------------------------------------------------------
 // ADICIONAR XP (sem bug — exemplo de increment atômico)
 // ---------------------------------------------------------------------------
 export async function adicionarXP(personagemId: string, quantidade: number) {
-  await updateDoc(doc(db, "personagens", personagemId), {
+  await updateDoc(doc(db!, "personagens", personagemId), {
     xp: quantidade,
   });
 }
