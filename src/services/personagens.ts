@@ -117,7 +117,7 @@ export async function deletarPersonagem(
   indice: number
 ): Promise<void> {
   // 🐛 BUG 07 — usa o índice da lista (0, 1, 2) como ID do documento
-  await deleteDoc(doc(db, "personagens", String(indice)));
+  await deleteDoc(doc(db, "personagens", personagem.id));
 }
 
 // ---------------------------------------------------------------------------
