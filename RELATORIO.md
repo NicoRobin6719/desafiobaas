@@ -27,6 +27,11 @@ Depois:
   }
 }
 ```
+
+![bug01-before](session-files/screenshots/bug01-before.png)
+
+![bug01-after](session-files/screenshots/bug01-after.png)
+
 Explicação: o catch vazio escondia falhas do processo de login. Agora a mensagem de erro é exibida ao usuário com mensagens mais específicas quando possível.
 
 ---
@@ -46,6 +51,11 @@ if (!token) {
   return NextResponse.redirect(new URL("/login", request.url));
 }
 ```
+
+![bug02-before](session-files/screenshots/bug02-before.png)
+
+![bug02-after](session-files/screenshots/bug02-after.png)
+
 Explicação: a negação foi aplicada para garantir que somente usuários não autenticados sejam redirecionados para a tela de login.
 
 ---
@@ -65,6 +75,11 @@ if (senha !== confirmarSenha) {
   setErro("As senhas não coincidem.");
 }
 ```
+
+![bug03-before](session-files/screenshots/bug03-before.png)
+
+![bug03-after](session-files/screenshots/bug03-after.png)
+
 Explicação: validação de formulário corrigida para comparar senha com confirmarSenha, evitando aceitações indevidas.
 
 ---
@@ -83,6 +98,11 @@ const q = query(
   where("userId", "==", _uid)
 );
 ```
+
+![bug04-before](session-files/screenshots/bug04-before.png)
+
+![bug04-after](session-files/screenshots/bug04-after.png)
+
 Explicação: adiciona-se filtro por userId para evitar exposição de dados de outros usuários.
 
 ---
@@ -98,6 +118,11 @@ Depois:
 ```ts
 const ref = await addDoc(collection(db, "personagens"), { ... });
 ```
+
+![bug05-before](session-files/screenshots/bug05-before.png)
+
+![bug05-after](session-files/screenshots/bug05-after.png)
+
 Explicação: padroniza nome da coleção para 'personagens' (plural) garantindo consistência entre leitura e escrita.
 
 ---
@@ -113,6 +138,11 @@ Depois:
 ```ts
 await updateDoc(doc(db, "personagens", personagemId), { [slot]: itemId });
 ```
+
+![bug06-before](session-files/screenshots/bug06-before.png)
+
+![bug06-after](session-files/screenshots/bug06-after.png)
+
 Explicação: setDoc substitui todo o documento; updateDoc atualiza apenas o(s) campo(s) informados.
 
 ---
@@ -128,6 +158,11 @@ Depois:
 ```ts
 await deleteDoc(doc(db, "personagens", personagem.id));
 ```
+
+![bug07-before](session-files/screenshots/bug07-before.png)
+
+![bug07-after](session-files/screenshots/bug07-after.png)
+
 Explicação: usa-se o id real do documento em vez do índice da lista para garantir que o documento correto seja removido.
 
 ---
@@ -152,6 +187,11 @@ match /personagens/{personagemId} {
                         request.auth.uid == resource.data.userId;
 }
 ```
+
+![bug08-before](session-files/screenshots/bug08-before.png)
+
+![bug08-after](session-files/screenshots/bug08-after.png)
+
 Explicação: regras agora exigem autenticação e correspondência do userId para leituras e escritas, protegendo os dados dos usuários.
 
 ---
